@@ -15,14 +15,15 @@ namespace MorseDecoderTest
         List<string> allMorseSymbols = new List<string>(Decoder.MorseCodeDictionary.Keys);
         List<char> allDecodedSymbols = new List<char>(Decoder.MorseCodeDictionary.Values);
 
-        Dictionary<string, string> correctDecodeWitKnownSymbols;
+        Dictionary<string, string> correctDecodeWithKnownSymbols;
 
         [SetUp]
         public void Setup()
         {
-            correctDecodeWitKnownSymbols = new Dictionary<string, string>
+            correctDecodeWithKnownSymbols = new Dictionary<string, string>
             {
                 { ".... . .-.. .-.. ---   .-- --- .-. .-.. -..", "HELLO WORLD"}, // just two words
+                { ".... .  .-.. .-.. ---      .-- --- .-. .-.. -..", "HELLO WORLD"}, // Extra spaces
                 { "....", "H"}, // One symbol
                 { String.Join("   ", allMorseSymbols), String.Join(" ", allDecodedSymbols)} // Splited by 3 spaces (decoder decode 3 morse spaces as 1 space)
             };
@@ -40,7 +41,7 @@ namespace MorseDecoderTest
         [Test]
         public void CorrectChars()
         {
-            foreach (var pair in correctDecodeWitKnownSymbols)
+            foreach (var pair in correctDecodeWithKnownSymbols)
             {
                 string decodedString = StartAndGetAnswer(pair.Key);
                 Assert.AreEqual(decodedString, pair.Value);
@@ -52,7 +53,7 @@ namespace MorseDecoderTest
         {
             List<string> allMorseSymbolsWithForgoten = new List<string>(allMorseSymbols);
             List<char> allDecodedSymbolsWithForgoten = new List<char>(allDecodedSymbols);
-            Dictionary<string, string> correctDecodeWitUnknownSymbols = new Dictionary<string, string>(correctDecodeWitKnownSymbols);
+            Dictionary<string, string> correctDecodeWitUnknownSymbols = new Dictionary<string, string>(correctDecodeWithKnownSymbols);
             foreach (char c in "HLWD") // first,last,double symbols
             {
                 allDecodedSymbolsWithForgoten[allDecodedSymbolsWithForgoten.FindIndex(el => el == c)] = '*';
